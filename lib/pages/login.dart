@@ -1,9 +1,12 @@
 import 'package:collegeapp/CustomBoxShadow.dart';
+import 'package:collegeapp/Models/User.dart';
+import 'package:collegeapp/services/authentication.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
-  Login({Key key, this.loginCallback}) : super(key: key);
+  Login({Key key, this.loginCallback, this.auth}) : super(key: key);
   final VoidCallback loginCallback;
+  final Auth auth;
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +25,18 @@ class Login extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: LoginPage(
-        title: 'College System Login',
-        loginCallback: this.loginCallback,
-      ),
+          title: 'College System Login',
+          loginCallback: this.loginCallback,
+          auth: this.auth),
     );
   }
 }
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title, this.loginCallback}) : super(key: key);
+  LoginPage({Key key, this.title, this.loginCallback, this.auth})
+      : super(key: key);
   final String title;
+  final Auth auth;
 
   final VoidCallback loginCallback;
 
@@ -67,34 +72,32 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = true;
     });
     if (validateAndSave()) {
-      String userId = "";
+      User user;
+
       print("Email: " + _email);
       print("Senha: " + _password);
-      widget.loginCallback();
-      // try {
-      //   if (_isLoginForm) {
-      //     userId = await widget.auth.signIn(_email, _password);
-      //     print('Signed in: $userId');
-      //   } else {
-      //     userId = await widget.auth.signUp(_email, _password);
-      //     //widget.auth.sendEmailVerification();
-      //     //_showVerifyEmailSentDialog();
-      //     print('Signed up user: $userId');
-      //   }
-      //   setState(() {
-      //     _isLoading = false;
-      //   });
 
-      //   if (userId.length > 0 && userId != null && _isLoginForm) {
-      //   }
-      // } catch (e) {
-      //   print('Error: $e');
-      //   setState(() {
-      //     _isLoading = false;
-      //     _errorMessage = e.message;
-      //     _formKey.currentState.reset();
-      //   });
-      // }
+      try {
+        if (_isLoginForm) {
+          user = await widget.auth.signIn(_email, _password);
+          print('Signed in: $user');
+          widget.loginCallback();
+        }
+
+        setState(() {
+          _isLoading = false;
+        });
+      } catch (e) {
+        print('Error: $e');
+        setState(() {
+          _isLoading = false;
+          _errorMessage = e;
+        });
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -181,6 +184,16 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
     // #ab1c2e
+
+    Widget loadingIndicator = _isLoading
+        ? new Container(
+            color: Color.fromRGBO(171, 28, 46, .0),
+            child: new Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: new Center(child: new CircularProgressIndicator())),
+          )
+        : loginButon;
+
     return Scaffold(
       body: SingleChildScrollView(
           child: Container(
@@ -211,17 +224,22 @@ class _LoginPageState extends State<LoginPage> {
                                 image: new ExactAssetImage('assets/logo.png'),
                                 fit: BoxFit.cover,
                               ))),
-                      SizedBox(height: 120.0),
+                      SizedBox(height: 100.0),
                       emailField,
                       SizedBox(height: 25.0),
                       passwordField,
                       SizedBox(
-                        height: 35.0,
-                      ),
-                      loginButon,
-                      SizedBox(
                         height: 15.0,
                       ),
+                      loadingIndicator,
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        _errorMessage,
+                        style: TextStyle(fontSize: 20),
+                      )
+                      //,
                     ],
                   ),
                 ),

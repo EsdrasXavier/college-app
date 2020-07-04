@@ -1,3 +1,4 @@
+import 'package:collegeapp/Models/User.dart';
 import 'package:collegeapp/pages/home.dart';
 import 'package:collegeapp/pages/login.dart';
 import 'package:collegeapp/services/authentication.dart';
@@ -20,7 +21,7 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
-  String _userId = "";
+  User _userId;
 
   @override
   void initState() {
@@ -40,7 +41,7 @@ class _RootPageState extends State<RootPage> {
   void loginCallback() {
     widget.auth.getCurrentUser().then((user) {
       setState(() {
-        _userId = user.toString();
+        _userId = user;
       });
     });
     setState(() {
@@ -51,7 +52,7 @@ class _RootPageState extends State<RootPage> {
   void logoutCallback() {
     setState(() {
       authStatus = AuthStatus.NOT_LOGGED_IN;
-      _userId = "";
+      _userId = null;
     });
   }
 
@@ -72,14 +73,12 @@ class _RootPageState extends State<RootPage> {
         return buildWaitingScreen();
         break;
       case AuthStatus.NOT_LOGGED_IN:
-        return new Login(
-          loginCallback: loginCallback,
-        );
+        return new Login(loginCallback: loginCallback, auth: widget.auth);
         break;
       case AuthStatus.LOGGED_IN:
-        if (_userId.length > 0 && _userId != null) {
+        if (_userId != null && _userId.token.length > 0) {
           return new Home(
-            userId: _userId,
+            userId: _userId.userId,
             logoutCallback: logoutCallback,
           );
         } else

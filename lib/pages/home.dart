@@ -1,10 +1,9 @@
-import 'package:collegeapp/CustomBoxShadow.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
   Home({Key key, this.logoutCallback, this.userId}) : super(key: key);
   final VoidCallback logoutCallback;
-  final String userId;
+  final int userId;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class HomePage extends StatefulWidget {
   HomePage({Key key, this.userId, this.title, this.logoutCallback})
       : super(key: key);
   final String title;
-  final String userId;
+  final int userId;
 
   final VoidCallback logoutCallback;
 
