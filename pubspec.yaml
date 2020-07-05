@@ -26,6 +26,11 @@ dependencies:
 
   http: 0.12.1
   intl: ^0.16.1
+  loading:
+    git:
+      url: git://github.com/leonzone/loading.git
+      path: loading
+      ref: 8f5a63f
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -40,7 +45,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

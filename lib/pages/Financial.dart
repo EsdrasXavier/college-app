@@ -3,6 +3,7 @@ import 'package:collegeapp/Models/User.dart';
 import 'package:collegeapp/services/BillingService.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading/loading.dart';
 
 class Financial extends StatefulWidget {
   Financial({Key key, this.user}) : super(key: key);
@@ -52,19 +53,16 @@ class _Financial extends State<Financial> {
       fetchUserData();
     }
 
-    if (_isLoading) {
-      return new Stack();
-    }
-
-    // var registerDate =
-    //     DateFormat('dd/MM/yyyy').format(DateTime.parse(_currentUser.createdAt));
-
     return new Scaffold(
         backgroundColor: color,
         body: new SingleChildScrollView(
           padding: EdgeInsets.all(16.0),
-          child: this.getTable(),
+          child: _isLoading ? this.getLoading() : this.getTable(),
         ));
+  }
+
+  Widget getLoading() {
+    return Center(child: Loading());
   }
 
   Widget getTable() {
