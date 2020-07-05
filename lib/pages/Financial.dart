@@ -78,8 +78,8 @@ class _Financial extends State<Financial> {
             Center(child: this.generateCell('Data', 18))
           ],
         ),
-        ...List<TableRow>.generate(35, (index) {
-          final item = _billings[0];
+        ...List<TableRow>.generate(_billings.length, (index) {
+          final item = _billings[index];
           double fontSize = 15;
           return TableRow(
             children: [
