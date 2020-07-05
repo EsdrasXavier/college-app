@@ -27,7 +27,7 @@ class _RootPageState extends State<RootPage> {
   void initState() {
     super.initState();
     widget.auth.getCurrentUser().then((user) {
-      print("User: ");
+      print("User: " + (user == null ? '' : user.token));
       setState(() {
         if (user != null) {
           _userId = user;
@@ -78,7 +78,7 @@ class _RootPageState extends State<RootPage> {
       case AuthStatus.LOGGED_IN:
         if (_userId != null && _userId.token.length > 0) {
           return new Home(
-            userId: _userId.userId,
+            user: _userId,
             logoutCallback: logoutCallback,
           );
         } else

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:collegeapp/Models/User.dart';
+import 'package:collegeapp/services/ErrorMsgService.dart';
 import 'package:http/http.dart' as http;
 
 Map<String, String> get headers =>
@@ -18,18 +19,11 @@ abstract class BaseAuth {
 
   Future<void> signOut();
   Future<User> getCurrentUser();
-
-  String handleMsg(Map<String, dynamic> json);
 }
 
 class Auth implements BaseAuth {
   set user(User user) {
     currentUser = user;
-  }
-
-  String handleMsg(Map<String, dynamic> json) {
-    print(json);
-    return json['msg'];
   }
 
   Future<User> signIn(String email, String password) async {
@@ -44,7 +38,7 @@ class Auth implements BaseAuth {
       return currentUser;
     }
 
-    throw (handleMsg(json.decode(response.body)));
+    throw (ErrorMsgService.handleMsg(json.decode(response.body)));
   }
 
   Future<void> signOut() async {
