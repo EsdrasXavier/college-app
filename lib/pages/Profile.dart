@@ -18,12 +18,12 @@ class _Profile extends State<Profile> {
   User _currentUser;
 
   void fetchUserData() {
+    if (_isLoading == true) return;
     setState(() {
       _isLoading = true;
     });
 
     UserService().getUserData(widget.user).then((value) {
-      print('Ok');
       print(value.userName);
       setState(() {
         _isLoading = false;
@@ -99,26 +99,19 @@ class _Profile extends State<Profile> {
                 ),
                 SizedBox(height: 105.0),
                 Container(
-                    height: 35.0,
+                    // height: 35.0,
                     width: 125.0,
                     child: Material(
-                      borderRadius: BorderRadius.circular(20.0),
-                      shadowColor: Colors.redAccent,
-                      color: color,
-                      elevation: 7.0,
-                      child: GestureDetector(
-                        onTap: () {
-                          print('Deslogando');
-                          widget.logoutCallback();
-                        },
-                        child: Center(
-                          child: Text(
-                            'Log out',
-                            style: TextStyle(
-                                color: Colors.white, fontFamily: 'Montserrat'),
-                          ),
-                        ),
-                      ),
+                      elevation: 5.0,
+                      borderRadius: BorderRadius.circular(30.0),
+                      color: Color.fromRGBO(171, 28, 46, .90),
+                      child: MaterialButton(
+                          minWidth: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                          onPressed: () {
+                            widget.logoutCallback();
+                          },
+                          child: Text("Sair", textAlign: TextAlign.center)),
                     ))
               ],
             ))

@@ -1,4 +1,5 @@
 import 'package:collegeapp/Models/User.dart';
+import 'package:collegeapp/pages/Financial.dart';
 import 'package:collegeapp/pages/Profile.dart';
 import 'package:flutter/material.dart';
 
@@ -33,9 +34,8 @@ class _Navigator extends State<Home> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _widgetOptions = <Widget>[
-      Text(
-        'Index 1: Business',
-        style: optionStyle,
+      Financial(
+        user: widget.user,
       ),
       Text(
         'Index 2: School',
