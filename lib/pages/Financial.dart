@@ -1,9 +1,9 @@
 import 'package:collegeapp/Models/Billing.dart';
 import 'package:collegeapp/Models/User.dart';
+import 'package:collegeapp/Utils/Loading.dart';
 import 'package:collegeapp/services/BillingService.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:loading/loading.dart';
 
 class Financial extends StatefulWidget {
   Financial({Key key, this.user}) : super(key: key);
